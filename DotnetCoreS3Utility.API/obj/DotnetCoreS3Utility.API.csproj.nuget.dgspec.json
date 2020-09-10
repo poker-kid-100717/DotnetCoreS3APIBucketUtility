@@ -29,7 +29,14 @@
         },
         "frameworks": {
           "netcoreapp2.2": {
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Core\\DotnetCoreS3Utility.Core.csproj": {
+                "projectPath": "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Core\\DotnetCoreS3Utility.Core.csproj"
+              },
+              "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj": {
+                "projectPath": "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -41,6 +48,14 @@
       "frameworks": {
         "netcoreapp2.2": {
           "dependencies": {
+            "AWSSDK.Extensions.NETCore.Setup": {
+              "target": "Package",
+              "version": "[3.3.100.1, )"
+            },
+            "AWSSDK.s3": {
+              "target": "Package",
+              "version": "[3.3.102.23, )"
+            },
             "Microsoft.AspNetCore.App": {
               "suppressParent": "All",
               "target": "Package",
@@ -57,19 +72,141 @@
               "target": "Package",
               "version": "[2.2.0, )",
               "autoReferenced": true
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.2, )"
             }
           },
           "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
+            "net461"
           ],
           "assetTargetFallback": true,
-          "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+          "warn": true
+        }
+      }
+    },
+    "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Core\\DotnetCoreS3Utility.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Core\\DotnetCoreS3Utility.Core.csproj",
+        "projectName": "DotnetCoreS3Utility.Core",
+        "projectPath": "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Core\\DotnetCoreS3Utility.Core.csproj",
+        "packagesPath": "C:\\Users\\joshd\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\joshd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "newtonsoft.json": {
+              "target": "Package",
+              "version": "[12.0.2, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj",
+        "projectName": "DotnetCoreS3Utility.Infrastructure",
+        "projectPath": "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\joshd\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\joshd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {
+              "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Core\\DotnetCoreS3Utility.Core.csproj": {
+                "projectPath": "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Core\\DotnetCoreS3Utility.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "AWSSDK.s3": {
+              "target": "Package",
+              "version": "[3.3.102.23, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
         }
       }
     }

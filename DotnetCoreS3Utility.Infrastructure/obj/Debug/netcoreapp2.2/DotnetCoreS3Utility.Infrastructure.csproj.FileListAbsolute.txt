@@ -1,0 +1,12 @@
+c:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\bin\Debug\netcoreapp2.2\DotnetCoreS3Utility.Infrastructure.deps.json
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\bin\Debug\netcoreapp2.2\DotnetCoreS3Utility.Infrastructure.dll
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\bin\Debug\netcoreapp2.2\DotnetCoreS3Utility.Infrastructure.pdb
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\bin\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.dll
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\bin\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.pdb
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Infrastructure.csprojAssemblyReference.cache
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Infrastructure.AssemblyInfo.cs
+c:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Infrastructure.csproj.CopyComplete
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Infrastructure.dll
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Infrastructure\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Infrastructure.pdb

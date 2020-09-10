@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetCoreS3Utility.API", "DotnetCoreS3Utility.API\DotnetCoreS3Utility.API.csproj", "{D067355F-4D76-4B31-9474-F6718744EA97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetCoreS3Utility.Core", "DotnetCoreS3Utility.Core\DotnetCoreS3Utility.Core.csproj", "{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetCoreS3Utility.Infrastructure", "DotnetCoreS3Utility.Infrastructure\DotnetCoreS3Utility.Infrastructure.csproj", "{AE343D3B-0A10-471E-B279-54DE680CDE22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,30 @@ Global
 		{D067355F-4D76-4B31-9474-F6718744EA97}.Release|x64.Build.0 = Release|Any CPU
 		{D067355F-4D76-4B31-9474-F6718744EA97}.Release|x86.ActiveCfg = Release|Any CPU
 		{D067355F-4D76-4B31-9474-F6718744EA97}.Release|x86.Build.0 = Release|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Debug|x64.Build.0 = Debug|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Debug|x86.Build.0 = Debug|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Release|x64.ActiveCfg = Release|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Release|x64.Build.0 = Release|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Release|x86.ActiveCfg = Release|Any CPU
+		{0CCAB496-F26E-4DC2-A1FF-E6C0F3BD8C15}.Release|x86.Build.0 = Release|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Debug|x64.Build.0 = Debug|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Debug|x86.Build.0 = Debug|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Release|x64.ActiveCfg = Release|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Release|x64.Build.0 = Release|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Release|x86.ActiveCfg = Release|Any CPU
+		{AE343D3B-0A10-471E-B279-54DE680CDE22}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

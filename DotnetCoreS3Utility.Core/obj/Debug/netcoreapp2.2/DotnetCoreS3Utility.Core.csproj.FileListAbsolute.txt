@@ -1,0 +1,9 @@
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Core\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.csprojAssemblyReference.cache
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Core\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.csproj.CoreCompileInputs.cache
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Core\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.AssemblyInfoInputs.cache
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Core\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.AssemblyInfo.cs
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Core\bin\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.deps.json
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Core\bin\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.dll
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Core\bin\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.pdb
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Core\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.dll
+C:\Users\joshd\Documents\GitHub\DotnetCoreS3Utility\DotnetCoreS3Utility.Core\obj\Debug\netcoreapp2.2\DotnetCoreS3Utility.Core.pdb
