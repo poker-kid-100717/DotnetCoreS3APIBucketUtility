@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj": {}
+    "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj": {}
   },
   "projects": {
     "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Core\\DotnetCoreS3Utility.Core.csproj": {
@@ -64,14 +64,14 @@
         }
       }
     },
-    "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj": {
+    "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj",
         "projectName": "DotnetCoreS3Utility.Infrastructure",
-        "projectPath": "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\DotnetCoreS3Utility.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\joshd\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\joshd\\Documents\\GitHub\\DotnetCoreS3Utility\\DotnetCoreS3Utility.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
