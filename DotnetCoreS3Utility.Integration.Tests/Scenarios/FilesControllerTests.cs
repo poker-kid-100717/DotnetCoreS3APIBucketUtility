@@ -1,19 +1,20 @@
-﻿using Amazon.Extensions.NETCore.Setup;
-using Amazon.Runtime;
-using Amazon.S3;
-using DotnetCoreS3Utility.API;
-using DotnetCoreS3Utility.Core.Communication.Files;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.S3;
+using AspNetCore.Http.Extensions;
+using LifeBackUp.Api;
+using LifeBackUp.Core.Files;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace DotnetCoreS3Utility.Integration.Tests.Scenarios
@@ -21,11 +22,12 @@ namespace DotnetCoreS3Utility.Integration.Tests.Scenarios
     [Collection("api")]
     public class FilesControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {
-        private readonly HttpClient _client;
+        private readonly HttpClient _httpClient;
+        private const string ServiceUrl = "http://localhost:9003";
 
         public FilesControllerTests(WebApplicationFactory<Startup> factory)
         {
-            _client = factory.WithWebHostBuilder(builder =>
+            _httpClient = factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureTestServices(services =>
                 {
@@ -33,42 +35,33 @@ namespace DotnetCoreS3Utility.Integration.Tests.Scenarios
                     {
                         DefaultClientConfig =
                         {
-                            ServiceURL = "http://localhost:9003"
+                            ServiceURL = ServiceUrl
                         },
                         Credentials = new BasicAWSCredentials("FAKE", "FAKE")
                     });
                 });
             }).CreateClient();
-
             Task.Run(CreateBucket).Wait();
         }
 
         private async Task CreateBucket()
         {
-            await _client.PostAsJsonAsync("api/bucket/create/testS3Bucket", "testS3Bucket");
-        }
-
-        [Fact]
-        public async Task When_AddFiles_endpoint_is_hit_we_are_returned_ok_status()
-        {
-            var response = await UploadFileToS3Bucket();
-
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            await _httpClient.PostAsJsonAsync("api/bucket/create/testS3Bucket", "testS3Bucket");
         }
 
         private async Task<HttpResponseMessage> UploadFileToS3Bucket()
         {
-            const string path = @"c:\temp\IntegrationTest.jpg";
-
+            const string path = @"c:\s3Temp\IntegrationTest.jpg";
             var file = File.Create(path);
+
             HttpContent fileStreamContent = new StreamContent(file);
 
             var formData = new MultipartFormDataContent
             {
-                {fileStreamContent, "formFiles", "IntegrationTest.jpg" }
+                {fileStreamContent, "formFiles", "IntegrationTest.jpg"}
             };
 
-            var response = await _client.PostAsync("api/files/testS3Bucket/add", formData);
+            var response = await _httpClient.PostAsync("api/files/testS3Bucket/add", formData);
 
             fileStreamContent.Dispose();
             formData.Dispose();
@@ -76,59 +69,68 @@ namespace DotnetCoreS3Utility.Integration.Tests.Scenarios
             return response;
         }
 
-        //[Fact]
-        //public async Task When_ListFiles_endpoint_is_hit_our_result_is_not_null()
-        //{
-        //    await UploadFileToS3Bucket();
+        [Fact]
+        public async Task When_AddFiles_endPoint_is_hit_we_are_returned_ok_status()
+        {
+            var response = await UploadFileToS3Bucket();
 
-        //    var response = await _client.GetAsync("api/files/testS3Bucket/list");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
 
-        //    ListFilesResponse[] result;
-        //    using (var content = response.Content.ReadAsStringAsync())
-        //    {
-        //        result = JsonConvert.DeserializeObject<ListFilesResponse[]>(await content);
-        //    }
+        [Fact]
+        public async Task When_ListFiles_endpoint_is_hit_our_result_is_not_null()
+        {
+            await UploadFileToS3Bucket();
 
-        //    Assert.NotNull(result);
-        //}
+            var response = await _httpClient.GetAsync("api/files/testS3Bucket/list");
 
-        //[Fact]
-        //public async Task When_DownloadFiles_endpoint_is_hit_we_are_returned_ok_status()
-        //{
-        //    const string filename = @"IntegrationTest.jpg";
+            ListFilesResponse[] result;
+            using (var content = response.Content.ReadAsStringAsync())
+            {
+                result = JsonConvert.DeserializeObject<ListFilesResponse[]>(await content);
+            }
 
-        //    await UploadFileToS3Bucket();
+            Assert.NotNull(result);
+        }
 
-        //    var response = await _client.GetAsync($"api/files/testS3Bucket/download/{filename}");
+        [Fact]
+        public async Task When_DownloadFiles_endpoint_is_hit_we_are_returned_ok_status()
+        {
+            const string filename = @"IntegrationTest.jpg";
 
-        //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        //}
+            await UploadFileToS3Bucket();
 
-        //[Fact]
-        //public async Task When_DeleteFile_endpoint_is_hit_we_are_returned_ok_status()
-        //{
-        //    const string filename = @"IntegrationTest.jpg";
+            var response = await _httpClient.GetAsync($"api/files/testS3Bucket/download/{filename}");
 
-        //    await UploadFileToS3Bucket();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
 
-        //    var response = await _client.DeleteAsync($"api/files/testS3Bucket/delete/{filename}");
+        [Fact]
+        public async Task When_DeleteFile_endpoint_is_hit_we_are_returned_ok_status()
+        {
+            const string filename = @"IntegrationTest.jpg";
 
-        //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        //}
+            await UploadFileToS3Bucket();
 
-        //[Fact]
-        //public async Task When_AddJsonObject_endpoint_is_hit_we_are_returned_ok_status()
-        //{
-        //    var jsonObjectRequest = new AddJsonObjectRequest
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        Data = "Test-Data",
-        //        TimeSent = DateTime.UtcNow
-        //    };
+            var response = await _httpClient.DeleteAsync($"api/files/testS3Bucket/delete/{filename}");
 
-        //    var response = await _client.PostAsJsonAsync("api/files/testS3Bucket/addjsonobject/", jsonObjectRequest);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
 
-        //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        //}
+        [Fact]
+        public async Task When_AddJsonObject_endpoint_is_hit_we_are_returned_ok_status()
+        {
+            var jsonObjectRequest = new AddJsonObjectRequest
+            {
+                Id = Guid.NewGuid(),
+                Data = "Test-Data",
+                TimeSent = DateTime.UtcNow
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("api/files/testS3Bucket/addjsonobject/", jsonObjectRequest);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
     }
 }
