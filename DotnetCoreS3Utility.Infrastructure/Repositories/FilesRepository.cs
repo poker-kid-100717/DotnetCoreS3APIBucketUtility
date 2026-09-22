@@ -70,13 +70,15 @@ namespace DotnetCoreS3Utility.Infrastructure.Repositories
                 BucketName = b.BucketName,
                 Key = b.Key,
                 Owner = b.Owner.DisplayName,
-                Size = b.Size
+                Size = b.Size ?? 0
             });
         }
 
         public async Task DownloadFile(string bucketName, string fileName)
         {
-            var pathAndFileName = $"C:\\S3Temp\\{fileName}";
+            var tempDirectory = Path.Combine(Path.GetTempPath(), "S3Temp");
+            Directory.CreateDirectory(tempDirectory);
+            var pathAndFileName = Path.Combine(tempDirectory, fileName);
 
             var downloadRequest = new TransferUtilityDownloadRequest
             {

@@ -16,7 +16,12 @@ Object storage isn't abstract for me — I've built against it under real load a
 - `DELETE /delete/{bucketName}` — delete a bucket
 
 **Files** (`/api/files`)
-- Upload, list, and remove objects within a bucket
+- `POST /{bucketName}/add` — upload objects to a bucket
+- `GET /{bucketName}/list` — list objects in a bucket
+- `GET /{bucketName}/download/{fileName}` — download an object
+- `DELETE /{bucketName}/delete/{fileName}` — delete an object
+
+There's also an in-app **Architecture** page (served at `/`) covering the same layering and design decisions as this README, for anyone running the API rather than reading the repo.
 
 ## Structure
 
@@ -29,7 +34,7 @@ DotnetCoreS3Utility.Integration.Tests/ xUnit integration tests exercising the AP
 
 ## Running it
 
-Requires AWS credentials with S3 access (via the standard AWS SDK credential chain — environment variables, shared credentials file, or an IAM role).
+Requires AWS credentials with S3 access (via the standard AWS SDK credential chain — environment variables, shared credentials file, or an IAM role). Without credentials, the API still runs and serves the architecture page; S3 calls return a clean JSON error instead of a stack trace.
 
 ```bash
 dotnet restore

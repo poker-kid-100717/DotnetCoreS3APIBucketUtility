@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DotnetCoreS3Utility &mdash; Architecture</title>
+<style>
+  :root {
+    --ink: #18181b;
+    --muted: #71717a;
+    --line: #e4e4e7;
+    --brand: #2563eb;
+    --soft: #f4f4f5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: #fff;
+    line-height: 1.6;
+  }
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--brand);
+    margin: 0 0 0.5rem;
+  }
+  h1 { font-size: 2rem; margin: 0 0 1rem; }
+  h2 { font-size: 1.4rem; margin: 2.5rem 0 1.25rem; }
+  .intro { color: var(--muted); max-width: 650px; }
+  .layers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 2rem 0;
+  }
+  .layer-card {
+    flex: 1 1 220px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    background: var(--soft);
+  }
+  .layer-card h3 { margin: 0 0 0.3rem; font-size: 1rem; }
+  .layer-card p { margin: 0; color: var(--muted); font-size: 0.85rem; }
+  .decision {
+    border-left: 3px solid var(--brand);
+    padding-left: 1rem;
+    margin-bottom: 1.75rem;
+  }
+  .decision h3 { margin: 0 0 0.2rem; font-size: 1.05rem; }
+  .decision .instead {
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin: 0 0 0.5rem;
+  }
+  .decision .why { color: #3f3f46; margin: 0; }
+  .endpoints {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .endpoints th, .endpoints td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9rem;
+  }
+  .endpoints code { background: var(--soft); padding: 0.1rem 0.35rem; border-radius: 4px; }
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  a { color: var(--brand); }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">How it's built</p>
+  <h1>Architecture &amp; the reasoning behind it</h1>
+  <p class="intro">
+    A small ASP.NET Core Web API wrapping the AWS SDK for S3 bucket and object management.
+    Below is the layering it follows, and the specific tradeoffs behind the choices that
+    matter &mdash; not just which pattern was used, but what it replaced and why.
+  </p>
+
+  <div class="layers">
+    <div class="layer-card">
+      <h3>API</h3>
+      <p>Controllers, request/response wiring</p>
+    </div>
+    <div class="layer-card">
+      <h3>Core</h3>
+      <p>IBucketRepository / IFilesRepository interfaces, own DTOs</p>
+    </div>
+    <div class="layer-card">
+      <h3>Infrastructure</h3>
+      <p>AWS SDK-backed implementation, mapped to Core DTOs</p>
+    </div>
+  </div>
+
+  <h2>Design decisions</h2>
+
+  <div class="decision">
+    <h3>Own response DTOs (CreateBucketResponse, etc.) instead of returning AWS SDK types up through the API</h3>
+    <p class="instead">instead of passing PutBucketResponse and other SDK response objects straight through to callers</p>
+    <p class="why">The AWS SDK's response shapes change across major versions and carry AWS-specific metadata callers don't need. Mapping at the Infrastructure boundary means an SDK upgrade is a one-file change, not an API contract break &mdash; this repo's own migration from AWS SDK v3 to v4 only touched the Infrastructure layer.</p>
+  </div>
+
+  <div class="decision">
+    <h3>Interface-driven IBucketRepository / IFilesRepository over the AWS SDK</h3>
+    <p class="instead">instead of calling IAmazonS3 directly from the controllers</p>
+    <p class="why">This is the case where the abstraction actually pays for itself: the object-storage backend legitimately varies &mdash; S3 here, a different cloud provider's storage on other projects &mdash; and the interface is what lets the same Core-layer contract carry across both without touching callers. If only one provider were ever expected for the life of a project, this layer wouldn't be worth adding &mdash; call the SDK directly from a thin service instead.</p>
+  </div>
+
+  <h2>Endpoints</h2>
+  <table class="endpoints">
+    <tbody>
+      <tr><td><code>POST /api/bucket/create/{bucketName}</code></td><td>Create an S3 bucket (rejects if it already exists)</td></tr>
+      <tr><td><code>GET /api/bucket/list</code></td><td>List buckets</td></tr>
+      <tr><td><code>DELETE /api/bucket/delete/{bucketName}</code></td><td>Delete a bucket</td></tr>
+      <tr><td><code>POST /api/files/{bucketName}/add</code></td><td>Upload objects to a bucket</td></tr>
+      <tr><td><code>GET /api/files/{bucketName}/list</code></td><td>List objects in a bucket</td></tr>
+      <tr><td><code>GET /api/files/{bucketName}/download/{fileName}</code></td><td>Download an object</td></tr>
+      <tr><td><code>DELETE /api/files/{bucketName}/delete/{fileName}</code></td><td>Delete an object</td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    Full source, tests, and README:
+    <a href="https://github.com/poker-kid-100717/DotnetCoreS3APIBucketUtility" target="_blank" rel="noreferrer">github.com/poker-kid-100717/DotnetCoreS3APIBucketUtility</a>
+  </footer>
+</main>
+</body>
+</html>

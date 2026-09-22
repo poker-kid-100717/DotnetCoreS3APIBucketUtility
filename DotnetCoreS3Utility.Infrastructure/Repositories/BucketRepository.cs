@@ -1,5 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Util;
 using DotnetCoreS3Utility.Core.Communication.Bucket;
 using DotnetCoreS3Utility.Core.Interfaces;
 using System;
@@ -21,7 +22,7 @@ namespace DotnetCoreS3Utility.Infrastructure.Repositories
 
         public async Task<bool> DoesS3BucketExist(string bucketName)
         {
-            return await _s3Client.DoesS3BucketExistAsync(bucketName);
+            return await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, bucketName);
         }
 
         public async Task<CreateBucketResponse> CreateBucket(string bucketName)
@@ -48,7 +49,7 @@ namespace DotnetCoreS3Utility.Infrastructure.Repositories
             return response.Buckets.Select(b => new ListS3BucketsResponse
             {
                 BucketName = b.BucketName,
-                CreationDate = b.CreationDate
+                CreationDate = b.CreationDate ?? default
             });
         }
 
