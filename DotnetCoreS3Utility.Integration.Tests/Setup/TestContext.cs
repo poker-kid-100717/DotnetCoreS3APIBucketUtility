@@ -1,95 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Docker.DotNet;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
-using Docker.DotNet.Models;
+using Amazon.Runtime;
+using Amazon.S3;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Testcontainers.LocalStack;
 using Xunit;
 
 namespace DotnetCoreS3Utility.Integration.Tests.Setup
 {
-    public class TestContext : IAsyncLifetime
+    /// <summary>
+    /// Starts LocalStack (S3 emulator) in Docker once per test run, points the
+    /// API's IAmazonS3 at it, and creates the bucket the scenarios use.
+    /// </summary>
+    public sealed class TestContext : IAsyncLifetime
     {
-        private readonly DockerClient _dockerClient;
-        private string _containerId;
-        private const string ContainerImageUri = "localstack/localstack";
-        
-        public TestContext()
-        {
-            _dockerClient = new DockerClientConfiguration(new Uri(DocketApiUri())).CreateClient();
+        // Pinned: from March 2026 `localstack/localstack:latest` requires a
+        // LOCALSTACK_AUTH_TOKEN. 4.14.0 is the last release that runs without one.
+        private const string LocalStackImage = "localstack/localstack:4.14.0";
 
-        }
+        // S3 bucket names must be lowercase.
+        public const string BucketName = "integration-test-bucket";
+
+        private readonly LocalStackContainer _localStack = new LocalStackBuilder(LocalStackImage).Build();
+        private WebApplicationFactory<Program>? _factory;
+
+        public HttpClient Client { get; private set; } = null!;
 
         public async Task InitializeAsync()
         {
-            await PullImage();
+            await _localStack.StartAsync();
 
-            await StartContainer();
-        }
-
-        private async Task PullImage()
-        {
-            await _dockerClient.Images
-                .CreateImageAsync(new ImagesCreateParameters
-                    {
-                        FromImage = ContainerImageUri,
-                        Tag = "latest"
-                    },
-                    new AuthConfig(),
-                    new Progress<JSONMessage>());
-
-        }
-
-        private async Task StartContainer()
-        {
-            try
-            {
-                var response = await _dockerClient.Containers.CreateContainerAsync(new CreateContainerParameters
+            var s3Client = new AmazonS3Client(
+                new BasicAWSCredentials("test", "test"),
+                new AmazonS3Config
                 {
-                    Image = ContainerImageUri,
-                    ExposedPorts = new Dictionary<string, EmptyStruct>
-                    {
-                        {"9003", default}
-                    },
-                    HostConfig = new HostConfig
-                    {
-                        PortBindings = new Dictionary<string, IList<PortBinding>>
-                        {
-                            {"9003", new List<PortBinding> {new PortBinding {HostPort = "9003"}}}
-                        }
-                    },
-                    Env = new List<string> { "SERVICES=s3:9003" }
+                    ServiceURL = _localStack.GetConnectionString(),
+                    ForcePathStyle = true,
+                    AuthenticationRegion = "us-east-1"
                 });
 
-                _containerId = response.ID;
-                await _dockerClient.Containers.StartContainerAsync(_containerId, null);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-               
-            }
-        }
-        private string DocketApiUri()
-        {
-            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-            if (isWindows)
-                return "npipe://./pipe/docker_engine";
+            _factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+                builder.ConfigureTestServices(services =>
+                {
+                    services.RemoveAll<IAmazonS3>();
+                    services.AddSingleton<IAmazonS3>(s3Client);
+                }));
 
-            var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
-            if (isLinux)
-                return "unix:///var/run/docker.sock";
+            Client = _factory.CreateClient();
 
-            throw new Exception("Unable to determine what OS this is running on");
-
+            var response = await Client.PostAsync($"api/bucket/create/{BucketName}", null);
+            response.EnsureSuccessStatusCode();
         }
 
         public async Task DisposeAsync()
         {
-            if (_containerId != null)
+            Client?.Dispose();
+            if (_factory != null)
             {
-                await _dockerClient.Containers.KillContainerAsync(_containerId, new ContainerKillParameters());
+                await _factory.DisposeAsync();
             }
+            await _localStack.DisposeAsync();
         }
     }
 }

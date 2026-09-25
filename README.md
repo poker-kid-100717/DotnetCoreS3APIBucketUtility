@@ -1,5 +1,7 @@
 # DotnetCoreS3Utility
 
+[![CI](https://github.com/poker-kid-100717/DotnetCoreS3APIBucketUtility/actions/workflows/ci.yml/badge.svg)](https://github.com/poker-kid-100717/DotnetCoreS3APIBucketUtility/actions/workflows/ci.yml)
+
 A small ASP.NET Core Web API that wraps the AWS SDK for S3 bucket and object management, laid out with the same Core/Infrastructure/API separation I use on larger projects: an interface-driven `Core` layer, an `Infrastructure` layer implementing those interfaces against the AWS SDK, and a thin `API` layer exposing them over HTTP.
 
 ## Applied in production, not just referenced here
@@ -29,12 +31,12 @@ There's also an in-app **Architecture** page (served at `/`) covering the same l
 DotnetCoreS3Utility.API/              Controllers, Startup/Program, request/response wiring
 DotnetCoreS3Utility.Core/             IBucketRepository / IFilesRepository interfaces, request/response contracts
 DotnetCoreS3Utility.Infrastructure/   AWS SDK-backed implementations of the Core interfaces
-DotnetCoreS3Utility.Integration.Tests/ xUnit integration tests exercising the API against a test AWS context
+DotnetCoreS3Utility.Integration.Tests/ xUnit integration tests exercising the API against LocalStack S3
 ```
 
 ## Running it
 
-Requires AWS credentials with S3 access (via the standard AWS SDK credential chain — environment variables, shared credentials file, or an IAM role). Without credentials, the API still runs and serves the architecture page; S3 calls return a clean JSON error instead of a stack trace.
+Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download) and AWS credentials with S3 access (via the standard AWS SDK credential chain — environment variables, shared credentials file, or an IAM role). Without credentials, the API still runs and serves the architecture page; S3 calls return a clean JSON error instead of a stack trace.
 
 ```bash
 dotnet restore
@@ -46,3 +48,5 @@ dotnet run --project DotnetCoreS3Utility.API
 ```bash
 dotnet test DotnetCoreS3Utility.Integration.Tests
 ```
+
+The tests run the real API in-process (`WebApplicationFactory`) against [LocalStack](https://www.localstack.cloud/)'s S3 emulator, started in Docker by [Testcontainers](https://dotnet.testcontainers.org/). You need Docker running, but no AWS account or credentials. The image is pinned to `localstack/localstack:4.14.0`, the last release that runs without a LocalStack auth token. GitHub Actions runs the same suite on every push and pull request.
