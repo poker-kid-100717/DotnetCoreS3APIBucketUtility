@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore DotnetCoreS3Utility.sln
+
+      - name: Build
+        run: dotnet build DotnetCoreS3Utility.sln --no-restore --configuration Release
+
+      # Integration tests start LocalStack via Testcontainers; the runner's
+      # Docker daemon is all they need.
+      - name: Test
+        run: dotnet test DotnetCoreS3Utility.sln --no-build --configuration Release --verbosity normal

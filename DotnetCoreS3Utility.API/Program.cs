@@ -1,17 +1,15 @@
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+using DotnetCoreS3Utility.API;
+using Microsoft.AspNetCore.Builder;
 
-namespace DotnetCoreS3Utility.API
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateWebHostBuilder(args).Build().Run();
-        }
+var builder = WebApplication.CreateBuilder(args);
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
-    }
-}
+var startup = new Startup(builder.Configuration);
+startup.ConfigureServices(builder.Services);
+
+var app = builder.Build();
+startup.Configure(app, app.Environment);
+
+app.Run();
+
+// Exposes the entry point to WebApplicationFactory<Program> in the integration tests.
+public partial class Program { }
