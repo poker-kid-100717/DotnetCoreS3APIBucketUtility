@@ -14,15 +14,18 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
 
       - name: Restore
         run: dotnet restore DotnetCoreS3Utility.sln
+
+      - name: Dependency vulnerability report
+        run: dotnet list DotnetCoreS3Utility.sln package --vulnerable --include-transitive
 
       - name: Build
         run: dotnet build DotnetCoreS3Utility.sln --no-restore --configuration Release
