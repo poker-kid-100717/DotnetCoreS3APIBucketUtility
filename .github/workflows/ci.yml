@@ -30,7 +30,25 @@ jobs:
       - name: Build
         run: dotnet build DotnetCoreS3Utility.sln --no-restore --configuration Release
 
-      # Integration tests start LocalStack via Testcontainers; the runner's
+      # Integration tests start LocalStack and MongoDB via Testcontainers; the runner's
       # Docker daemon is all they need.
       - name: Test
         run: dotnet test DotnetCoreS3Utility.sln --no-build --configuration Release --verbosity normal
+
+  cloudflare:
+    name: Cloudflare deploy dry-run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - run: bash -n scripts/cloudflare-deploy.sh
+      - run: bash scripts/cloudflare-deploy.sh
+        env:
+          VALIDATE_ONLY: "true"
+          APP_HOST: files.example.com
+          R2_ACCESS_KEY_ID: dry-run
+          R2_SECRET_ACCESS_KEY: dry-run
+          DATABASE_URL: mongodb+srv://dry-run:dry-run@dry-run.mongodb.net/s3utility
+          API_KEY: dry-run

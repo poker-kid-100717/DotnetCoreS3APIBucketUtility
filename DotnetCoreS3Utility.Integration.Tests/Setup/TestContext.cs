@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Testcontainers.LocalStack;
+using Testcontainers.MongoDb;
 using Xunit;
 
 namespace DotnetCoreS3Utility.Integration.Tests.Setup
 {
     /// <summary>
-    /// Starts LocalStack (S3 emulator) in Docker once per test run, points the
-    /// API's IAmazonS3 at it, and creates the bucket the scenarios use.
+    /// Starts LocalStack (S3 emulator) and MongoDB (the object catalog) in Docker once per test run,
+    /// points the API at both, and creates the bucket the scenarios use.
     /// </summary>
     public sealed class TestContext : IAsyncLifetime
     {
@@ -25,13 +26,14 @@ namespace DotnetCoreS3Utility.Integration.Tests.Setup
         public const string BucketName = "integration-test-bucket";
 
         private readonly LocalStackContainer _localStack = new LocalStackBuilder(LocalStackImage).Build();
+        private readonly MongoDbContainer _mongo = new MongoDbBuilder("mongo:8.0").Build();
         private WebApplicationFactory<Program>? _factory;
 
         public HttpClient Client { get; private set; } = null!;
 
         public async Task InitializeAsync()
         {
-            await _localStack.StartAsync();
+            await Task.WhenAll(_localStack.StartAsync(), _mongo.StartAsync());
 
             var s3Client = new AmazonS3Client(
                 new BasicAWSCredentials("test", "test"),
@@ -43,7 +45,7 @@ namespace DotnetCoreS3Utility.Integration.Tests.Setup
                 });
 
             _factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
-                builder.ConfigureTestServices(services =>
+                builder.UseSetting("DATABASE_URL", _mongo.GetConnectionString()).ConfigureTestServices(services =>
                 {
                     services.RemoveAll<IAmazonS3>();
                     services.AddSingleton<IAmazonS3>(s3Client);
@@ -63,6 +65,7 @@ namespace DotnetCoreS3Utility.Integration.Tests.Setup
                 await _factory.DisposeAsync();
             }
             await _localStack.DisposeAsync();
+            await _mongo.DisposeAsync();
         }
     }
 }

@@ -8,3 +8,8 @@ obj/
 
 ## OS
 .DS_Store
+
+## Cloudflare (generated)
+cloudflare/wrangler.generated.jsonc
+cloudflare/node_modules/
+cloudflare/package-lock.json

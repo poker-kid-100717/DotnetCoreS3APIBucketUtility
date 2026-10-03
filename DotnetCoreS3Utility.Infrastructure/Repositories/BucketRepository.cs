@@ -14,10 +14,12 @@ namespace DotnetCoreS3Utility.Infrastructure.Repositories
     public class BucketRepository : IBucketRepository
     {
         private readonly IAmazonS3 _s3Client;
+        private readonly IObjectCatalog _catalog;
 
-        public BucketRepository(IAmazonS3 s3Client)
+        public BucketRepository(IAmazonS3 s3Client, IObjectCatalog catalog)
         {
             _s3Client = s3Client;
+            _catalog = catalog;
         }
 
         public async Task<bool> DoesS3BucketExist(string bucketName)
@@ -56,6 +58,7 @@ namespace DotnetCoreS3Utility.Infrastructure.Repositories
         public async Task DeleteBucket(string bucketName)
         {
             await _s3Client.DeleteBucketAsync(bucketName);
+            await _catalog.RemoveBucketAsync(bucketName);
         }
     }
 }
